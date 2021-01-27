@@ -6,9 +6,9 @@ A simple employee search tool using mock data, using React/styled-components.
 
 ## Features
 
-[x] Displays the employee data below
-[x] Allows a user to search for an employee by name
-[x] Allows a user to filter the data by both department and age
+- [x] Displays the employee data below
+- [x] Allows a user to search for an employee by name
+- [x] Allows a user to filter the data by both department and age
 
 ## Installing Dependencies
 
