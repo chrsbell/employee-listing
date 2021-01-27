@@ -11,18 +11,42 @@ const getAgeRange = (age, range = 5) => {
   return { min, max };
 };
 
-const filterEmployees = (term) => {
-  term = term.toLowerCase();
+const nameFilter = (employee, name) =>
+  employee.name.toLowerCase().includes(name);
+
+const ageFilter = (employee, minAge, maxAge) =>
+  employee.age >= minAge && employee.age <= maxAge;
+
+const departmentFilter = (employee, department) => {
+  if (department) {
+    return employee.department === department;
+  }
+  // default to true if there was no department selected
+  return true;
+};
+
+/**
+ * Filters and formats employee data based on name/age range/department
+ */
+const filter = (name = "", minAge = 0, maxAge = 120, department = "") => {
+  name = name.toLowerCase();
   const departments = new Set();
   const ageRanges = {};
   let filtered = data.filter((employee) => {
-    return employee.name.toLowerCase().includes(term);
+    return (
+      nameFilter(employee, name) &&
+      ageFilter(employee, minAge, maxAge) &&
+      departmentFilter(employee, department)
+    );
   });
+
+  // Create list of departments and age ranges that apply to filtered employees
   filtered.forEach((employee) => {
     departments.add(employee.department);
     const ageRange = getAgeRange(employee.age);
     ageRanges[JSON.stringify(ageRange)] = ageRange;
   });
+
   return {
     list: filtered,
     departments: [...departments],
@@ -31,18 +55,18 @@ const filterEmployees = (term) => {
 };
 
 /**
- * Returns entire employee list with available departments and age ranges.
+ * Send the entire employee list.
  */
 router.get("/", (req, res) => {
-  res.status(200).send(filterEmployees(""));
+  res.status(200).send(filter());
 });
 
 /**
- * Returns employee list filtered by name with available departments and age ranges.
+ * Send employee list filtered by name with available departments and age ranges.
  */
 router.get("/search", (req, res) => {
-  let { term } = req.query;
-  res.status(200).send(filterEmployees(term));
+  let { name, minAge, maxAge, department } = req.query;
+  res.status(200).send(filter(name, minAge, maxAge, department));
 });
 
 module.exports = router;
