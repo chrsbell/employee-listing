@@ -23,18 +23,16 @@ const AgeDropdown = ({ ranges, filterable, callback }) => {
       </DropdownButton>
       <DropdownContent className={className}>
         {ranges.map((range, i) => (
-          <>
-            <DropdownEntry
-              href="#"
-              key={range}
-              onClick={() => {
-                setClassName("none");
-                callback(filterable[i]);
-              }}
-            >
-              {range}
-            </DropdownEntry>
-          </>
+          <DropdownEntry
+            href="#"
+            key={range}
+            onClick={() => {
+              setClassName("none");
+              callback(filterable[i]);
+            }}
+          >
+            {range}
+          </DropdownEntry>
         ))}
       </DropdownContent>
     </Dropdown>

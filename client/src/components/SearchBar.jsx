@@ -5,12 +5,15 @@ import { getAllEmployees } from "./APIMethods";
 
 const Input = styled.input`
   border: 10px;
-  outline: none;
   background-color: transparent;
+  outline: 2px dashed black;
   font-size: 16px;
   text-overflow: ellipsis;
   margin: 10px 0 10px 0;
   font-family: "Open Sans", sans-serif;
+  &:focus {
+    box-shadow: 0 0 3pt 2pt black;
+  }
 `;
 
 const SearchBar = ({ changeCallback, resetCallback }) => {

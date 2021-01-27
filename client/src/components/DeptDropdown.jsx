@@ -23,18 +23,16 @@ const DeptDropdown = ({ departments, callback }) => {
       </DropdownButton>
       <DropdownContent className={className}>
         {departments.map((department) => (
-          <>
-            <DropdownEntry
-              href="#"
-              key={department}
-              onClick={() => {
-                setClassName("none");
-                callback(department);
-              }}
-            >
-              {department}
-            </DropdownEntry>
-          </>
+          <DropdownEntry
+            href="#"
+            key={department}
+            onClick={() => {
+              setClassName("none");
+              callback(department);
+            }}
+          >
+            {department}
+          </DropdownEntry>
         ))}
       </DropdownContent>
     </Dropdown>

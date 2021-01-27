@@ -4,11 +4,14 @@
 
 A simple employee search tool using mock data, using React/styled-components.
 
+![](https://i.imgur.com/jssBuks.png)
+![](https://i.imgur.com/MNWXzmY.png)
+
 ## Features
 
-- [x] Displays the employee data below
+- [x] Displays the employee data
 - [x] Allows a user to search for an employee by name
-- [x] Allows a user to filter the data by both department and age
+- [x] Dropdown menus to filter based on department and age range
 
 ## Installing Dependencies
 
