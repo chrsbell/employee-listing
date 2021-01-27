@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import Employee from "./Employee";
 import AppContext from "./AppContext";
 
 const EmployeeList = () => {
@@ -35,16 +34,29 @@ const EmployeeList = () => {
   useEffect(() => {
     return getAllEmployees();
   }, []);
-  /**
-   * Component render.
-   */
-  console.log(appState);
-  return appState.employeeList.map((employee) => (
-    <Employee
-      key={`${employee.name}${employee.age}${employee.department}`}
-      data={employee}
-    />
-  ));
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Age</th>
+        </tr>
+      </thead>
+      <tbody>
+        {appState.employeeList.map((employee) => (
+          <tr key={`${employee.name}tr`}>
+            <td key={`${employee.name}td`}>{employee.name}</td>
+            <td key={`${employee.name}${employee.age}td`}>{employee.age}</td>
+            <td key={`${employee.name}${employee.department}td`}>
+              {employee.department}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
 };
 
 export default EmployeeList;
