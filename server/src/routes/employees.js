@@ -3,26 +3,46 @@ const router = express.Router();
 const data = require("../db");
 
 /**
- * Returns entire employee list with available departments.
+ * Returns an age range string.
+ */
+const getAgeRange = (age, range = 5) => {
+  const min = Math.floor(age / range) * range;
+  const max = Math.ceil(age / range) * range;
+  return { min, max };
+};
+
+const filterEmployees = (term) => {
+  term = term.toLowerCase();
+  const departments = new Set();
+  const ageRanges = {};
+  let filtered = data.filter((employee) => {
+    return employee.name.toLowerCase().includes(term);
+  });
+  filtered.forEach((employee) => {
+    departments.add(employee.department);
+    const ageRange = getAgeRange(employee.age);
+    ageRanges[JSON.stringify(ageRange)] = ageRange;
+  });
+  return {
+    list: filtered,
+    departments: [...departments],
+    ageRanges: Object.values(ageRanges).sort((a, b) => a.min - b.min),
+  };
+};
+
+/**
+ * Returns entire employee list with available departments and age ranges.
  */
 router.get("/", (req, res) => {
-  const departments = new Set();
-  data.forEach((employee) => departments.add(employee.department));
-  res.status(200).send({ list: data, categories: [...departments] });
+  res.status(200).send(filterEmployees(""));
 });
 
 /**
- * Filters the JSON by the search term.
+ * Returns employee list filtered by name with available departments and age ranges.
  */
 router.get("/search", (req, res) => {
-  const departments = new Set();
   let { term } = req.query;
-  term = term.toLowerCase();
-  const filtered = data.filter((employee) => {
-    departments.add(employee.department);
-    return employee.name.toLowerCase().includes(term);
-  });
-  res.status(200).send({ list: filtered, categories: [...departments] });
+  res.status(200).send(filterEmployees(term));
 });
 
 module.exports = router;

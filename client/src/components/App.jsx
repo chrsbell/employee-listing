@@ -1,25 +1,25 @@
 import React, { useContext, useMemo, useReducer } from "react";
 import axios from "axios";
 import AppContext from "./AppContext";
+import FilterMenu from "./FilterMenu";
 import EmployeeList from "./EmployeeList";
-import SearchBar from "./SearchBar";
 
 const initialState = {
   employeeList: [],
-  categoryList: [],
+  departmentList: [],
+  ageRanges: [],
+  ageRangeStrings: [],
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "employeeList":
+    case "employeeInfo":
       return {
         ...state,
         employeeList: action.employeeList,
-      };
-    case "categoryList":
-      return {
-        ...state,
-        categoryList: action.categoryList,
+        departmentList: action.departmentList,
+        ageRanges: action.ageRanges,
+        ageRangeStrings: action.ageRangeStrings,
       };
   }
 };
@@ -37,7 +37,7 @@ const App = () => {
   return (
     <AppContext.Provider value={contextMemo}>
       <h1>Employee Listing</h1>
-      <SearchBar />
+      <FilterMenu />
       <EmployeeList />
     </AppContext.Provider>
   );

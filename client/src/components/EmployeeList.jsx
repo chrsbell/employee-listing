@@ -13,8 +13,15 @@ const EmployeeList = () => {
     axios
       .get("/api/employees", { cancelToken: source.token })
       .then((res) => {
-        dispatch({ type: "categoryList", categoryList: res.data.categories });
-        dispatch({ type: "employeeList", employeeList: res.data.list });
+        dispatch({
+          type: "employeeInfo",
+          employeeList: res.data.list,
+          departmentList: res.data.departments,
+          ageRanges: res.data.ageRanges,
+          ageRangeStrings: res.data.ageRanges.map(
+            (range) => `${range.min} - ${range.max}`
+          ),
+        });
       })
       .catch((err) => {
         console.error(`Couldn't GET /api/employees`);
@@ -31,8 +38,12 @@ const EmployeeList = () => {
   /**
    * Component render.
    */
+  console.log(appState);
   return appState.employeeList.map((employee) => (
-    <Employee key={employee.name} data={employee} />
+    <Employee
+      key={`${employee.name}${employee.age}${employee.department}`}
+      data={employee}
+    />
   ));
 };
 
