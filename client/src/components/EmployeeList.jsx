@@ -1,6 +1,19 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import styled from "styled-components";
 import AppContext from "./AppContext";
+
+const Table = styled.table`
+  font-family: "Open Sans", sans-serif;
+`;
+
+const Data = styled.td`
+  padding: 10px;
+`;
+
+const TableHeader = styled.th`
+  padding: 10px;
+`;
 
 const EmployeeList = () => {
   const { appState, dispatch } = useContext(AppContext);
@@ -36,26 +49,28 @@ const EmployeeList = () => {
   }, []);
 
   return (
-    <table>
+    <Table>
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Department</th>
-          <th>Age</th>
+          <TableHeader>Name</TableHeader>
+          <TableHeader>Department</TableHeader>
+          <TableHeader>Age</TableHeader>
         </tr>
       </thead>
       <tbody>
         {appState.employeeList.map((employee) => (
           <tr key={`${employee.name}tr`}>
-            <td key={`${employee.name}td`}>{employee.name}</td>
-            <td key={`${employee.name}${employee.age}td`}>{employee.age}</td>
-            <td key={`${employee.name}${employee.department}td`}>
+            <Data key={`${employee.name}td`}>{employee.name}</Data>
+            <Data key={`${employee.name}${employee.department}td`}>
               {employee.department}
-            </td>
+            </Data>
+            <Data key={`${employee.name}${employee.age}td`}>
+              {employee.age}
+            </Data>
           </tr>
         ))}
       </tbody>
-    </table>
+    </Table>
   );
 };
 

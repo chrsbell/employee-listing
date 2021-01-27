@@ -3,6 +3,7 @@ import axios from "axios";
 import AppContext from "./AppContext";
 import FilterMenu from "./FilterMenu";
 import EmployeeList from "./EmployeeList";
+import styled from "styled-components";
 
 const initialState = {
   employeeList: [],
@@ -11,15 +12,25 @@ const initialState = {
   ageRangeStrings: [],
 };
 
+const Header = styled.h2`
+  font-family: "Open Sans", sans-serif;
+`;
+
+const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 const reducer = (state, action) => {
   switch (action.type) {
     case "employeeInfo":
       return {
         ...state,
-        employeeList: action.employeeList,
-        departmentList: action.departmentList,
-        ageRanges: action.ageRanges,
-        ageRangeStrings: action.ageRangeStrings,
+        employeeList: action.employeeList.slice(0),
+        departmentList: action.departmentList.slice(0),
+        ageRanges: action.ageRanges.slice(0),
+        ageRangeStrings: action.ageRangeStrings.slice(0),
       };
   }
 };
@@ -36,9 +47,11 @@ const App = () => {
 
   return (
     <AppContext.Provider value={contextMemo}>
-      <h1>Employee Listing</h1>
-      <FilterMenu />
-      <EmployeeList />
+      <Body>
+        <Header>Employee Listing</Header>
+        <FilterMenu />
+        <EmployeeList />
+      </Body>
     </AppContext.Provider>
   );
 };
