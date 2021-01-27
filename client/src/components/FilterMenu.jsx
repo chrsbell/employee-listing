@@ -6,6 +6,7 @@ import AgeDropdown from "./AgeDropdown";
 import SearchBar from "./SearchBar";
 import styled from "styled-components";
 import { DropdownButton } from "./Dropdown";
+import { getAllEmployees, searchEmployees } from "./APIMethods";
 
 const FlexRow = styled.div`
   display: flex;
@@ -18,43 +19,14 @@ const FilterMenu = () => {
   const [department, setDepartment] = useState("");
   const [ageRange, setAgeRange] = useState([]);
   const [query, setQuery] = useState("");
+
   /**
-   * Search by employee name on back-end.
+   * Search every time new department or age range selected.
    */
-  const search = () => {
-    const source = axios.CancelToken.source();
-    axios
-      .get("/api/employees/search", {
-        params: {
-          name: query,
-          minAge: ageRange.min,
-          maxAge: ageRange.max,
-          department,
-        },
-        cancelToken: source.token,
-      })
-      .then((res) => {
-        console.log(res.data);
-        dispatch({
-          type: "employeeInfo",
-          employeeList: res.data.list,
-          departmentList: res.data.departments,
-          ageRanges: res.data.ageRanges,
-          ageRangeStrings: res.data.ageRanges.map(
-            (range) => `${range.min} - ${range.max}`
-          ),
-        });
-      })
-      .catch((err) => {
-        console.error(`Couldn't GET /api/employees/search`);
-      });
-    // Cancel any lingering API requests on component unmount.
-    return () => source.cancel();
-  };
-  useEffect(() => {
-    search();
-    console.log(department, ageRange);
-  }, [department, ageRange]);
+  useEffect(() => searchEmployees(dispatch, query, ageRange, department), [
+    department,
+    ageRange,
+  ]);
   /**
    * Reset the search.
    */
@@ -62,25 +34,8 @@ const FilterMenu = () => {
     setDepartment("");
     setAgeRange([]);
     setQuery("");
-    const source = axios.CancelToken.source();
-    axios
-      .get("/api/employees", { cancelToken: source.token })
-      .then((res) => {
-        dispatch({
-          type: "employeeInfo",
-          employeeList: res.data.list,
-          departmentList: res.data.departments,
-          ageRanges: res.data.ageRanges,
-          ageRangeStrings: res.data.ageRanges.map(
-            (range) => `${range.min} - ${range.max}`
-          ),
-        });
-      })
-      .catch((err) => {
-        console.error(`Couldn't GET /api/employees`);
-      });
-    // Cancel any lingering API requests on component unmount.
-    return () => source.cancel();
+    dispatch({ type: "reset", value: true });
+    return getAllEmployees(dispatch);
   };
   return (
     <>
@@ -100,8 +55,12 @@ const FilterMenu = () => {
         />
       </FlexRow>
       <FlexRow>
-        <SearchBar callback={(query) => setQuery(query)} />
-        <DropdownButton onClick={search}>Search</DropdownButton>
+        <SearchBar changeCallback={(query) => setQuery(query)} />
+        <DropdownButton
+          onClick={() => searchEmployees(dispatch, query, ageRange, department)}
+        >
+          Search
+        </DropdownButton>
         <DropdownButton onClick={reset}>Reset</DropdownButton>
       </FlexRow>
     </>

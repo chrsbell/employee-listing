@@ -18,9 +18,11 @@ const SearchBar = ({ changeCallback, resetCallback }) => {
   const [input, setInput] = useState("");
   const inputRef = useRef(null);
 
+  /**
+   * Reset the search bar text.
+   */
   useEffect(() => {
     if (appState.searchReset) {
-      console.log("reset search bar");
       setInput("");
       dispatch({ type: "reset", value: false });
     }
