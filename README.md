@@ -5,7 +5,7 @@
 A simple employee search tool using mock data, using React/styled-components.
 
 ![](https://i.imgur.com/jssBuks.png)
-![](https://i.imgur.com/MNWXzmY.png)
+![](https://i.imgur.com/Nl3pJBQ.png)
 
 ## Features
 

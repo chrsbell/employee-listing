@@ -6,8 +6,11 @@ const data = require("../db");
  * Returns an age range string.
  */
 const getAgeRange = (age, range = 5) => {
-  const min = Math.floor(age / range) * range;
-  const max = Math.ceil(age / range) * range;
+  let min = Math.floor(age / range) * range;
+  let max = Math.ceil(age / range) * range;
+  if (min === max) {
+    max += range;
+  }
   return { min, max };
 };
 
