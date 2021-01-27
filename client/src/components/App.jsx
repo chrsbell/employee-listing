@@ -1,5 +1,4 @@
 import React, { useContext, useMemo, useReducer } from "react";
-import axios from "axios";
 import AppContext from "./AppContext";
 import FilterMenu from "./FilterMenu";
 import EmployeeList from "./EmployeeList";
@@ -10,6 +9,7 @@ const initialState = {
   departmentList: [],
   ageRanges: [],
   ageRangeStrings: [],
+  searchReset: false,
 };
 
 const Header = styled.h2`
@@ -27,10 +27,15 @@ const reducer = (state, action) => {
     case "employeeInfo":
       return {
         ...state,
-        employeeList: action.employeeList.slice(0),
-        departmentList: action.departmentList.slice(0),
-        ageRanges: action.ageRanges.slice(0),
-        ageRangeStrings: action.ageRangeStrings.slice(0),
+        employeeList: action.employeeList,
+        departmentList: action.departmentList,
+        ageRanges: action.ageRanges,
+        ageRangeStrings: action.ageRangeStrings,
+      };
+    case "reset":
+      return {
+        ...state,
+        searchReset: action.value,
       };
   }
 };

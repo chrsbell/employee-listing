@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef, useEffect, useState } from "react";
 import AppContext from "./AppContext";
 import styled from "styled-components";
+import { getAllEmployees } from "./APIMethods";
 
 const Input = styled.input`
   border: 10px;
@@ -12,15 +13,30 @@ const Input = styled.input`
   font-family: "Open Sans", sans-serif;
 `;
 
-const SearchBar = ({ callback }) => {
+const SearchBar = ({ changeCallback, resetCallback }) => {
   const { appState, dispatch } = useContext(AppContext);
+  const [input, setInput] = useState("");
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (appState.searchReset) {
+      console.log("reset search bar");
+      setInput("");
+      dispatch({ type: "reset", value: false });
+    }
+  }, [appState.searchReset]);
 
   return (
     <Input
       placeholder="Search by name..."
       type="text"
       id="name"
-      onChange={(e) => callback(e.target.value)}
+      ref={inputRef}
+      value={input}
+      onChange={(e) => {
+        setInput(e.target.value);
+        changeCallback(e.target.value);
+      }}
     />
   );
 };
