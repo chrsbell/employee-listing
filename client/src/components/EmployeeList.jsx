@@ -13,11 +13,13 @@ const EmployeeList = () => {
     axios
       .get("/api/employees", { cancelToken: source.token })
       .then((res) => {
-        dispatch({ type: "employeeList", employeeList: res.data });
+        dispatch({ type: "categoryList", categoryList: res.data.categories });
+        dispatch({ type: "employeeList", employeeList: res.data.list });
       })
       .catch((err) => {
-        console.error(`Couldn't GET list of all employees.`);
+        console.error(`Couldn't GET /api/employees`);
       });
+    // Cancel any lingering API requests on component unmount.
     return () => source.cancel();
   };
   /**
